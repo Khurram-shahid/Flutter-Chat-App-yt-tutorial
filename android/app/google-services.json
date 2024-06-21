@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "281975694527",
+    "project_id": "user-authentication-a8606",
+    "storage_bucket": "user-authentication-a8606.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:281975694527:android:75c82c239a990d5266520a",
+        "android_client_info": {
+          "package_name": "com.example.chatapp_yt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkeBxcHqLYKlyPEWtSZTgjTEXBIC-Fptw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:281975694527:android:addb109fddc2630366520a",
+        "android_client_info": {
+          "package_name": "com.example.ytfirebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkeBxcHqLYKlyPEWtSZTgjTEXBIC-Fptw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
