@@ -20,7 +20,7 @@ class Resgistrationform extends StatefulWidget {
 class _ResgistrationformState extends State<Resgistrationform> {
   final ImagePicker _picker = ImagePicker();
   File? selectedimg;
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final StorageSerivces _storage = StorageSerivces();
   final Database _database = Database();
   TextEditingController namecont = TextEditingController();
@@ -34,9 +34,10 @@ class _ResgistrationformState extends State<Resgistrationform> {
       });
     }
   }
-   Future<bool> _saveloginstate()async{
-    final pref=await SharedPreferences.getInstance();
-    return pref.setBool('isLoggedIn',true);
+
+  Future<bool> _saveloginstate() async {
+    final pref = await SharedPreferences.getInstance();
+    return pref.setBool('isLoggedIn', true);
   }
 
   Future<void> registerAccount() async {
@@ -54,9 +55,19 @@ class _ResgistrationformState extends State<Resgistrationform> {
                   phonenumber: emailcont.text));
         }
         await _saveloginstate();
-        Get.off(()=>HomePage());
+        Get.off(() =>const HomePage());
+        Get.showSnackbar(const GetSnackBar(
+          backgroundColor: Colors.blue,
+          titleText: Text('Successfully registered'),
+          duration: Duration(seconds: 3),
+        ));
       } catch (e) {
-        print(e);
+        Get.showSnackbar(const GetSnackBar(
+          backgroundColor: Colors.red,
+          titleText: Text('Select image and Enter Name'),
+          duration: Duration(seconds: 3),
+        ));
+        
       }
     }
   }
@@ -103,7 +114,7 @@ class _ResgistrationformState extends State<Resgistrationform> {
                             )
                           : null,
                     )),
-                SizedBox(
+                const SizedBox(
                   height: 40,
                 ),
                 TextFormField(

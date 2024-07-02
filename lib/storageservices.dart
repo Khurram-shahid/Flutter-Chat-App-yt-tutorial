@@ -32,15 +32,13 @@ class StorageSerivces {
     Reference fileref = _storage
         .ref("chats/$chatid")
         .child("${DateTime.now().toIso8601String()}${p.extension(file.path)}");
-  UploadTask uploadTask = fileref.putFile(file);
-      TaskSnapshot taskSnapshot = await uploadTask;
-      if (taskSnapshot.state == TaskState.success) {
-        String dowloadurl = await fileref.getDownloadURL();
-        return dowloadurl;
-      } else {
-        return null;
-      }
-    } 
-    
-  
+    UploadTask uploadTask = fileref.putFile(file);
+    TaskSnapshot taskSnapshot = await uploadTask;
+    if (taskSnapshot.state == TaskState.success) {
+      String dowloadurl = await fileref.getDownloadURL();
+      return dowloadurl;
+    } else {
+      return null;
+    }
+  }
 }

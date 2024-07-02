@@ -82,12 +82,13 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  // ignore: non_constant_identifier_names
   Widget Chatlist(BuildContext context) {
     return StreamBuilder(
         stream: _database.getuserProfiles(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -111,7 +112,9 @@ class _HomePageState extends State<HomePage> {
                           await _database.createnewchat(
                               user.currentUser!.uid, userProfile.uid!);
                         }
-                        Get.to(()=>Chatpage(userProfile: userProfile,));
+                        Get.to(() => Chatpage(
+                              userProfile: userProfile,
+                            ));
                       });
                 });
           }

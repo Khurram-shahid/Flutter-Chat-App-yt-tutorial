@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chatapp_yt/call_fun.dart';
 import 'package:chatapp_yt/dataModel/chatModel.dart';
 import 'package:chatapp_yt/dataModel/messageModel.dart';
 import 'package:chatapp_yt/dataModel/userprofile.dart';
@@ -9,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Chatpage extends StatefulWidget {
@@ -23,7 +25,7 @@ class _ChatpageState extends State<Chatpage> {
   ChatUser? currentUser, otheruser;
   final user = FirebaseAuth.instance.currentUser!;
   final Database _database = Database();
-  StorageSerivces _storageSerivces = StorageSerivces();
+  final StorageSerivces _storageSerivces = StorageSerivces();
   final ImagePicker _imagePicker = ImagePicker();
   @override
   void initState() {
@@ -33,6 +35,12 @@ class _ChatpageState extends State<Chatpage> {
         id: widget.userProfile.uid!, firstName: widget.userProfile.name);
   }
 
+  void callchat(bool bol) async{
+    final callid =await
+        _database.GenerateUniqueid(uid1: currentUser!.id, uid2: otheruser!.id);
+        Get.off(()=>CallPage(callID: callid,bol: bol,));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +48,15 @@ class _ChatpageState extends State<Chatpage> {
         backgroundColor: Colors.blue,
         centerTitle: true,
         title: Text(widget.userProfile.name!),
+        actions: [
+          IconButton(
+            onPressed: () {
+              callchat(true);
+            },
+            icon: Icon(Icons.call),
+          ),
+          IconButton(onPressed: () {callchat(false);}, icon: Icon(Icons.video_call))
+        ],
       ),
       body: Builderui(),
     );
@@ -56,10 +73,8 @@ class _ChatpageState extends State<Chatpage> {
           }
           return DashChat(
               messageOptions: const MessageOptions(
-                  
-                  showOtherUsersAvatar: true,
-                  showTime: true),
-              inputOptions:  InputOptions(alwaysShowSend: true, trailing: [
+                  showOtherUsersAvatar: true, showTime: true),
+              inputOptions: InputOptions(alwaysShowSend: true, trailing: [
                 Medimsg(),
               ]),
               currentUser: currentUser!,
@@ -112,8 +127,9 @@ class _ChatpageState extends State<Chatpage> {
     }
   }
 
+  // ignore: non_constant_identifier_names
   Widget Medimsg() {
-    return  IconButton(
+    return IconButton(
         onPressed: Pickimg,
         icon: const Icon(
           Icons.image,
@@ -121,18 +137,26 @@ class _ChatpageState extends State<Chatpage> {
           size: 28,
         ));
   }
-  void Pickimg()async{
-   final XFile? image=await _imagePicker.pickImage(source: ImageSource.gallery);
-    if(image!=null){
-       String chatid=_database.GenerateUniqueid(uid1: currentUser!.id, uid2: otheruser!.id);
-       _storageSerivces.uploadchatimg(file: File(image.path), chatid: chatid);
-       String? dowloadurl= await _storageSerivces.uploadchatimg(file: File(image.path), chatid: chatid);
-       if(dowloadurl!=null){
-        ChatMessage message=ChatMessage(user: currentUser!, createdAt: DateTime.now(),medias: [
-          ChatMedia(url: dowloadurl, fileName: '', type: MediaType.image)
-        ]);
+
+  // ignore: non_constant_identifier_names
+  void Pickimg() async {
+    final XFile? image =
+        await _imagePicker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      String chatid = _database.GenerateUniqueid(
+          uid1: currentUser!.id, uid2: otheruser!.id);
+      _storageSerivces.uploadchatimg(file: File(image.path), chatid: chatid);
+      String? dowloadurl = await _storageSerivces.uploadchatimg(
+          file: File(image.path), chatid: chatid);
+      if (dowloadurl != null) {
+        ChatMessage message = ChatMessage(
+            user: currentUser!,
+            createdAt: DateTime.now(),
+            medias: [
+              ChatMedia(url: dowloadurl, fileName: '', type: MediaType.image)
+            ]);
         return onsend(message);
-       }
-    } 
+      }
+    }
   }
 }

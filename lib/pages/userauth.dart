@@ -14,7 +14,7 @@ class _UserAuthState extends State<UserAuth> {
   bool _issignup = false;
   TextEditingController emailcont = TextEditingController();
   TextEditingController passcont = TextEditingController();
-  FirebaseAuth _user = FirebaseAuth.instance;
+  final FirebaseAuth _user = FirebaseAuth.instance;
   void _toogle() {
     setState(() {
       _issignup = !_issignup;
@@ -26,12 +26,16 @@ class _UserAuthState extends State<UserAuth> {
       UserCredential _signup = await _user.createUserWithEmailAndPassword(
           email: emailcont.text, password: passcont.text);
       Get.showSnackbar(const GetSnackBar(
-        messageText: Text('Signup Successfully'),
+        backgroundColor: Colors.blue,
+        titleText: Text('Successfully Signup'),
+        duration: Duration(seconds: 3),
       ));
     } catch (e) {
-      Get.showSnackbar(GetSnackBar(backgroundColor: Colors.white,
-        messageText: Text('${e.toString()}'),
-      ));
+      // Get.showSnackbar(GetSnackBar(
+        // backgroundColor: Colors.red,
+        // titleText: Text("Error ${e.toString()}"),
+        // duration: const Duration(seconds: 3),
+      //));
     }
   }
 
@@ -40,13 +44,18 @@ class _UserAuthState extends State<UserAuth> {
       UserCredential _signin = await _user.signInWithEmailAndPassword(
           email: emailcont.text, password: passcont.text);
       Get.showSnackbar(const GetSnackBar(
-        messageText: Text('Signin Successfully'),
+        backgroundColor: Colors.blue,
+        titleText: Text('Successfully Signin'),
+        duration: Duration(seconds: 3),
       ));
-      Get.off(()=> Resgistrationform());
+
+      Get.off(() => const Resgistrationform());
     } catch (e) {
-      Get.showSnackbar(GetSnackBar(
-        messageText: Text('Incorrect Credential ${e.toString()}'),
-      ));
+      // Get.showSnackbar(GetSnackBar(
+      //   backgroundColor: Colors.red,
+      //   titleText: Text("Error ${e.toString()}"),
+      //   duration: const Duration(seconds: 3),
+      // ));
     }
   }
 
@@ -74,21 +83,38 @@ class _UserAuthState extends State<UserAuth> {
                 TextFormField(
                   controller: emailcont,
                   decoration: InputDecoration(
-                    hintText: 'Email',
+                      hintText: 'Email',
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30))),
                 ),
-                const SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
                 TextFormField(
                   controller: passcont,
                   decoration: InputDecoration(
-                    hintText: 'Password',
+                      hintText: 'Password',
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30))),
                 ),
-                const SizedBox(height: 30,),
-                SizedBox(width: 200,child: MaterialButton(onPressed: (){_issignup?signup():signin();},color: Colors.blue,child: Text(_issignup?'Signup':'Signin'),))
-                ,TextButton(onPressed: _toogle,child: Text(_issignup?'Have and account? Signin':"Dont's have an account? Signup"),)
+                const SizedBox(
+                  height: 30,
+                ),
+                SizedBox(
+                    width: 200,
+                    child: MaterialButton(
+                      onPressed: () {
+                        _issignup ? signup() : signin();
+                      },
+                      color: Colors.blue,
+                      child: Text(_issignup ? 'Signup' : 'Signin'),
+                    )),
+                TextButton(
+                  onPressed: _toogle,
+                  child: Text(_issignup
+                      ? 'Have and account? Signin'
+                      : "Dont's have an account? Signup"),
+                )
               ],
             ),
           ),

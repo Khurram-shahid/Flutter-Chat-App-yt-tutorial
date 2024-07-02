@@ -1,4 +1,3 @@
-
 import 'package:chatapp_yt/dataModel/chatModel.dart';
 import 'package:chatapp_yt/dataModel/messageModel.dart';
 import 'package:chatapp_yt/dataModel/userprofile.dart';
@@ -67,11 +66,12 @@ class Database {
     return _chatcollection?.doc(chatid).snapshots()
         as Stream<DocumentSnapshot<Chat>>;
   }
-  Future<void> sendmsg(String uid1,String uid2,Message message)async{
+
+  Future<void> sendmsg(String uid1, String uid2, Message message) async {
     String chatid = GenerateUniqueid(uid1: uid1, uid2: uid2);
-    final docref=_chatcollection!.doc(chatid);
+    final docref = _chatcollection!.doc(chatid);
     await docref.update({
-      "messages":FieldValue.arrayUnion([message.toJson()])
+      "messages": FieldValue.arrayUnion([message.toJson()])
     });
   }
 }

@@ -6,11 +6,11 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-);
+  );
   runApp(const MyApp());
 }
 
@@ -19,25 +19,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: FutureBuilder<bool>(future: _checkifLogedIn(),
-       builder:(context,snapshot){
-        if(snapshot.connectionState==ConnectionState.waiting){
-          return Center(child: CircularProgressIndicator(),);
-        }else if(snapshot.hasData&& snapshot.data==true){
-          return const HomePage();
-        }else{
-          return const UserAuth();
-        }
-       }
-      
-      
-      )
-    );
+    return GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: FutureBuilder<bool>(
+            future: _checkifLogedIn(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasData && snapshot.data == true) {
+                return const HomePage();
+              } else {
+                return const UserAuth();
+              }
+            }));
   }
-  Future<bool> _checkifLogedIn()async{
-    final pref=await SharedPreferences.getInstance();
-    return pref.getBool('isLoggedIn')?? false;
+
+  Future<bool> _checkifLogedIn() async {
+    final pref = await SharedPreferences.getInstance();
+    return pref.getBool('isLoggedIn') ?? false;
   }
 }
